@@ -1,17 +1,17 @@
 <?php
 
-$hostname="localhost";
-$username="root";
-$password="";
-$dbname="swivl";
+$hostname = "localhost";
+$username = "root";
+$password = "";
+$dbname = "swivl";
 
-mysql_connect($hostname,$username, $password);
+mysql_connect($hostname, $username, $password);
 
 $mysqli = new mysqli($hostname, $username, $password, $dbname);
 
-if (mysqli_connect_errno()) { 
-	printf("Connect failed: %s\n", mysqli_connect_error());
-	exit();
+if (mysqli_connect_errno()) {
+    printf("Connect failed: %s\n", mysqli_connect_error());
+    exit();
 }
 
 /* a. Return the name of the company and its phone */
@@ -30,6 +30,8 @@ $queryOneA = "SELECT
 $resultOneA = $mysqli->query($queryOneA);
 
 $rowOneA = $resultOneA->fetch_all();
+
+print_r($rowOneA);
 
 /* b. Return all firms that do not have phones. */
 
@@ -50,6 +52,9 @@ $resultOneB = $mysqli->query($queryOneB);
 
 $rowOneB = $resultOneB->fetch_all();
 
+print_r($rowOneB);
+
+
 /* c. Return all firms with at least 2 phones. */
 
 $queryOneC = "SELECT 
@@ -69,6 +74,8 @@ $resultOneC = $mysqli->query($queryOneC);
 
 $rowOneC = $resultOneC->fetch_all();
 
+print_r($rowOneC);
+
 /* d. Return all firms with less than 2 phones. */
 
 $queryOneD = "SELECT 
@@ -85,6 +92,8 @@ $queryOneD = "SELECT
 $resultOneD = $mysqli->query($queryOneD);
 
 $rowOneD = $resultOneD->fetch_all();
+
+print_r($rowOneD);
 
 /* e. Return the company with the maximum number of phones. */
 
@@ -106,10 +115,12 @@ $resultOnE = $mysqli->query($queryOnE);
 
 $rowOnE = $resultOnE->fetch_all();
 
+print_r($rowOnE);
+
 /* a. Print the total supply of each product for each firm, indicating dates of last delivery */
 
-$queryTwoA ="SELECT 
-				c.name ,g.name ,SUM(s.quantity) AS `quantity` , MAX(s.shipdate) AS `shipdate`
+$queryTwoA = "SELECT 
+				c.name, g.name, SUM(s.quantity) AS `quantity`, MAX(s.shipdate) AS `shipdate`
 			FROM 
 				company AS c 
 			LEFT JOIN 
@@ -123,21 +134,20 @@ $queryTwoA ="SELECT
 			WHERE 
 				s.quantity IS NOT NULL
 			GROUP BY 
-				c.name , g.name";
+				c.name, g.name";
 
 $resultTwoA = $mysqli->query($queryTwoA);
 
 $rowTwoA = $resultTwoA->fetch_all();
 
-die(var_dump($rowTwoA));
-
+print_r($rowTwoA);
 
 /* b. Similar to the previous paragraph, but in the last 50 days. If supplies
       any of the goods for the company in this period were absent, withdraw in
       volume column 'No data' */
 
-$queryTwoB ="SELECT 
-				c.name ,g.name , IFNULL(SUM(s.quantity),'No data') AS `quantity` , MAX(s.shipdate) AS `shipdate`
+$queryTwoB = "SELECT 
+				c.name, g.name, IFNULL(SUM(s.quantity),'No data') AS `quantity`, MAX(s.shipdate) AS `shipdate`
 			FROM 
 				company AS c 
 			LEFT JOIN 
@@ -151,15 +161,13 @@ $queryTwoB ="SELECT
 			WHERE 
 				s.shipdate > DATE_SUB(CURDATE(), INTERVAL 50 DAY)
 			GROUP BY 
-				c.name , g.name";
+				c.name, g.name";
 
 $resultTwoB = $mysqli->query($queryTwoB);
 
 $rowTwoB = $resultTwoB->fetch_all();
 
-die(var_dump($rowTwoB));
-
-
+print_r($rowTwoB);
 
 
 

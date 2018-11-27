@@ -5,8 +5,6 @@ $username = "root";
 $password = "";
 $dbname = "swivl";
 
-mysql_connect($hostname, $username, $password);
-
 $mysqli = new mysqli($hostname, $username, $password, $dbname);
 
 if (mysqli_connect_errno()) {
